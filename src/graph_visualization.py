@@ -16,7 +16,7 @@ def visualize(graph: graph):
 
     
     # pos = nx.get_node_attributes(g,'pos')
-    pos = nx.spring_layout(g)
+    pos = nx.shell_layout(g)
     nx.draw(g, pos, with_labels=True, font_weight='bold')
     labels = nx.get_edge_attributes(g,'weight')
     nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
