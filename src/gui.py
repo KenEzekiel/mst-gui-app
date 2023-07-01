@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog as fd
 from PIL import ImageTk, Image
 from fileloader import open_file
+from tkinter import simpledialog as sd
 from graph import graph
 from graph_visualization import *
 from prim import prim
@@ -28,21 +29,22 @@ bg.pack()
 
 # Initializing variables
 filename = ""
-on = True
+# on = True
 main_graph: graph
+out: graph
 pos = ""
 
 # Placing widgets
     
-mst_label = Label(
-    frame,
-    text="✓",
-    bg="#ffffff",
-    font=("Arial", 25)
-)
-mst_label.place(
-    x=880, y=42
-)
+# mst_label = Label(
+#     frame,
+#     text="✓",
+#     bg="#ffffff",
+#     font=("Arial", 25)
+# )
+# mst_label.place(
+#     x=880, y=42
+# )
 
 mst_img = PhotoImage(file="./assets/MST Clustering.png")
 mst_button = Button(
@@ -52,7 +54,7 @@ mst_button = Button(
     borderwidth=0,
     highlightthickness=0,
     relief='flat',
-    command=lambda: check()
+    command=lambda: cluster()
 )
 mst_button.place(
     x=930, y=45
@@ -141,7 +143,7 @@ node_btn = Button(
     borderwidth=0,
     highlightthickness=0,
     relief='flat',
-    command=lambda: print("Hi"),
+    command=lambda: node(),
     bg="#ffffff"
 )
 node_btn.place(
@@ -155,7 +157,7 @@ edge_btn = Button(
     borderwidth=0,
     highlightthickness=0,
     relief='flat',
-    command=lambda: print("Hi"),
+    command=lambda: edge(),
     bg="#ffffff"
 )
 edge_btn.place(
@@ -164,23 +166,22 @@ edge_btn.place(
 
 # Functionalities
 
-def check():
-    global mst_label
-    global on
+# def check():
+#     global mst_label
+#     global on
 
-    on = not on
-    # print(on)
-    if on:
-        mst_label['text'] = "✓"
-    else:
-        mst_label['text'] = "✕"
-    mst_label.update()
+#     on = not on
+#     # print(on)
+#     if on:
+#         mst_label['text'] = "✓"
+#     else:
+#         mst_label['text'] = "✕"
+#     mst_label.update()
 
 def insert():
     global text_label
     global filename
     global main_graph
-    global pos
     filename = fd.askopenfilename(
         title='Open a file',
         initialdir='/',
@@ -188,9 +189,11 @@ def insert():
     text_label['text'] = filename
     text_label.update()
     main_graph = open_file(filename)
-    pos = visualize(main_graph)
+    
 
 def vis():
+    global pos
+    pos = visualize(main_graph)
     graph_img = (Image.open("./img/plotgraph.png"))
     resized_image= graph_img.resize((400,350), Image.ANTIALIAS)
     resized_graph_image = ImageTk.PhotoImage(resized_image)
@@ -205,6 +208,7 @@ def change_image(image):
 def prim_vis():
     global pos
     global main_graph
+    global out
     out = prim(main_graph)
     visualize_with_MST(main_graph, out, pos)
 
@@ -216,6 +220,7 @@ def prim_vis():
 def kruskal_vis():
     global pos
     global main_graph
+    global out
     out = kruskal(main_graph)
     visualize_with_MST(main_graph, out, pos)
 
@@ -224,5 +229,22 @@ def kruskal_vis():
     resized_graph_image = ImageTk.PhotoImage(resized_image)
     change_image(resized_graph_image)
 
+def node():
+    global main_graph
+    main_graph.add_node()
+    vis()
+
+def edge():
+    global main_graph
+    global frame
+    node_1 = sd.askinteger("Input", "Input Node 1", parent=frame)
+    node_2 = sd.askinteger("Input", "Input Node 2", parent=frame)
+    weight = sd.askinteger("Input", "Input Weight", parent=frame)
+    main_graph.add_edge(node_1, node_2, weight)
+    vis()
+
+def cluster():
+    global out
+    global pos  
 
 win.mainloop()
