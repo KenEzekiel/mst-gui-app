@@ -1,8 +1,8 @@
 from graph import graph
 from prim import prim
 from kruskal import kruskal
-from graph_visualization import visualize, visualize_with_MST
-
+from graph_visualization import visualize, visualize_with_MST, visualize_cluster
+from cluster import cluster_mst
 
 # Get input from text file
 # Outputs a class representation of graph
@@ -26,8 +26,10 @@ def open_file(file_name: str) -> graph:
     return output
     
 
-# test = open_file("./txt/b.txt")
+# test = open_file("./txt/a.txt")
 # test.print()
+# cluster = cluster_mst(test, 2)
+# visualize_cluster(cluster)
 # pos = visualize(test)
 # test.add_edge(0, 6, 10)
 # test.add_edge(0, 7, 15)

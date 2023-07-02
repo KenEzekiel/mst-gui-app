@@ -43,6 +43,10 @@ class graph:
             self.list_rep[i].append(0)
         self.list_rep.append(node)
 
+    def remove_edge(self, i, j):
+        self.list_rep[i][j] = 0
+        self.list_rep[j][i] = 0
+
     # Returns the number of element in the graph
     def getLen(self):
         return len(self.list_rep)

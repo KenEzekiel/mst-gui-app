@@ -7,6 +7,7 @@ from graph import graph
 from graph_visualization import *
 from prim import prim
 from kruskal import kruskal
+from cluster import cluster_mst
 
 # Initialization
 win = Tk()
@@ -32,6 +33,7 @@ filename = ""
 # on = True
 main_graph: graph
 out: graph
+clustered: graph
 pos = ""
 
 # Placing widgets
@@ -245,6 +247,15 @@ def edge():
 
 def cluster():
     global out
-    global pos  
+    global clustered
+    n = sd.askinteger("Input", "Input cluster number", parent=frame)
+
+    clustered = cluster_mst(out, n)
+    visualize_cluster(clustered)
+
+    graph_img = (Image.open("./img/Cluster.png"))
+    resized_image= graph_img.resize((400,350), Image.ANTIALIAS)
+    resized_graph_image = ImageTk.PhotoImage(resized_image)
+    change_image(resized_graph_image)
 
 win.mainloop()
